@@ -1,3 +1,9 @@
 import '../style/style.sass';
 
-console.log('hellow webpack');
+import { renderTextarea } from './textareaModule.js';
+
+
+window.onload = () => {
+  renderTextarea(document.body);
+}
+
