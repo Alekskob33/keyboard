@@ -131,7 +131,7 @@ function isChangeLanguageCombination(buttonData) {
 
 function changeLanguage() {
   keyboard.state.lang = keyboard.state.lang === 'ru' ? 'en' : 'ru'; // toggle
-  // const lang = keyboard.state.lang;
+  const lang = keyboard.state.lang;
 
   resetModificatorsMemory(keyboard, 'force');
   keyboard.el.dispatchEvent(new CustomEvent('resetModificatorRequest', { bubbles: true }));
