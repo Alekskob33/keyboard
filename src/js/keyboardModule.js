@@ -96,26 +96,63 @@ function clickButtonHandler(event) {
         symbol: getButtonSymbol(buttonData.el),
       }
     }));
-    resetModificators(buttonData.el);
+    resetModificatorsMemory(buttonData.el);
     buttonData.el.dispatchEvent(new CustomEvent('resetModificatorRequest', { bubbles: true }));
   }
 }
 
-function resetModificators(el) {
+function resetModificatorsMemory(el, mode = 'typing') {
   const states = ["ControlLeft", "ControlRight", "ShiftLeft", "ShiftRight", "AltLeft", "AltRight"];
 
-  if (keyboard.state.ShiftLeft || keyboard.state.ShiftRight) {
-    el.dispatchEvent(new CustomEvent('upperCaseRequest', { bubbles: true }));
+  if (mode === 'typing') {
+    if (keyboard.state.ShiftLeft || keyboard.state.ShiftRight) {
+      el.dispatchEvent(new CustomEvent('upperCaseRequest', { bubbles: true }));
+    }
   }
+
+  if (mode === 'force') {
+    keyboard.state.CapsLock = false;
+  }
+
   states.forEach(prop => {
     keyboard.state[prop] = false;
   });
 };
 
+function isChangeLanguageCombination(buttonData) {
+  const codeAlt = buttonData.code === 'AltLeft' || buttonData.code === 'AltRight';
+  const codeShift = buttonData.code === 'ShiftLeft' || buttonData.code === 'ShiftRight';
+
+  const stateAlt = keyboard.state.AltLeft || keyboard.state.AltRight;
+  const stateShift = keyboard.state.ShiftLeft || keyboard.state.ShiftRight;
+
+  return ((codeAlt && stateShift) || (stateAlt && codeShift));
+}
+
+function changeLanguage() {
+  keyboard.state.lang = keyboard.state.lang === 'ru' ? 'en' : 'ru'; // toggle
+  const lang = keyboard.state.lang;
+
+  resetModificatorsMemory(keyboard, 'force');
+  keyboard.el.dispatchEvent(new CustomEvent('resetModificatorRequest', { bubbles: true }));
+
+  keyboard.el.dispatchEvent(new CustomEvent('changeLanguageRequest', { bubbles: true, detail: { lang: lang } }));
+  console.log(keyboard.state);
+}
+
 // 2. reaction ====================
 
 function keyboardStateHandler(buttonData) {
   const { el, code } = buttonData;
+
+  if (isChangeLanguageCombination(buttonData)) {
+    changeLanguage(buttonData);
+
+    // resetModificatorsMemory(buttonData.el);
+    // buttonData.el.dispatchEvent(new CustomEvent('resetModificatorRequest', { bubbles: true }));
+    return;
+  }
+
   // console.log(code);
   switch (code) {
     case 'ShiftLeft':

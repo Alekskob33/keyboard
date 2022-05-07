@@ -1,4 +1,4 @@
-import { keyboard, generateKeyboard, renderKeyboard, isSpetialKey } from './keyboardModule';
+import { keyboard, keys, generateKeyboard, renderKeyboard, isSpetialKey } from './keyboardModule';
 
 function toggleUpperCaseSymbols() {
   for (let button of keyboard.el.children) {
@@ -21,6 +21,14 @@ function resetKeyModificators() {
   }
 };
 
+function toggleKeyboardLanguage(event) {
+  const el = event.target;
+  const lg = event.detail.lang;
+
+  const html = generateKeyboard(keys, lg, 'html');
+  el.innerHTML = html;
+}
+
 document.addEventListener('upperCaseRequest', (event) => {
   toggleUpperCaseSymbols();
 });
@@ -32,5 +40,9 @@ document.addEventListener('togglePressedRequest', (event) => {
 
 document.addEventListener('resetModificatorRequest', (event) => {
   resetKeyModificators();
+});
+
+document.addEventListener('changeLanguageRequest', (event) => {
+  toggleKeyboardLanguage(event);
 });
 

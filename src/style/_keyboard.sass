@@ -41,6 +41,12 @@
       font-size: 0.7em
       line-height: 1em
 
+    &[data-upper-key="Ё"]:not(.is-upperCase),
+    &[data-code="Semicolon"]:not(.is-upperCase),
+    &[data-code="Quote"]:not(.is-upperCase),
+    &[data-code*="Bracket"]:not(.is-upperCase),
+    &[data-code="Period"]:not(.is-upperCase),
+    &[data-code="Comma"]:not(.is-upperCase),
     &[data-code*="Key"]:not(.is-upperCase)
       .v-keyboard__key-upper
         display: none

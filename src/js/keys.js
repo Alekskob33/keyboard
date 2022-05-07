@@ -74,7 +74,7 @@ export const en_Keys = [
 
 export const ru_Keys = [
   // 1-st row
-  { baseKey: "ё", upperKey: "auto", code: 'Backquote' },
+  { baseKey: "ё", upperKey: "Ё", code: 'Backquote' },
   { baseKey: "1", upperKey: "!", code: 'Digit1' },
   { baseKey: "2", upperKey: "\"", code: 'Digit2' },
   { baseKey: "3", upperKey: "№", code: 'Digit3' },
