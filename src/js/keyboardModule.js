@@ -219,3 +219,19 @@ function toggleLanguage() {
   keyboard.el.innerHTML = html;
 }
 
+export function highlightButton(ev) {
+  try {
+    const keyboardButton = document.querySelector(`[data-code=${ev.detail.keyCode}]`);
+    if (!keyboardButton) throw Error('Attention! This button wasn\'t found in RSS Virtual-Keyboard');
+
+    keyboardButton.dispatchEvent(new Event('click', { bubbles: true }));
+
+    keyboardButton.classList.add('is-active');
+    setTimeout(() => {
+      keyboardButton.classList.remove('is-active');
+    }, 100);
+  }
+  catch (err) {
+    console.log(err.message);
+  }
+}

@@ -10,6 +10,7 @@ document.addEventListener('keydown', (ev) => {
       keyboard.el.dispatchEvent(new CustomEvent('changeLanguageRequest', { bubbles: true, detail: { lang: lang } }));
     }
 
-    // ev.preventDefault();
   }
+  ev.preventDefault();
+  keyboard.el.dispatchEvent(new CustomEvent('highlightRequest', { bubbles: true, detail: { keyCode: ev.code } }));
 });
