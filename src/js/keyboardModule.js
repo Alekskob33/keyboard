@@ -137,7 +137,7 @@ function keyboardStateHandler(buttonData) {
       // insertTab();
       break;
     case 'Space':
-      // insertSpace();
+      buttonData.el.dispatchEvent(new CustomEvent('typeRequest', { bubbles: true, detail: { symbol: ' ' } }));
       break;
     case 'Backspace':
       deleteSymbol('prev');
