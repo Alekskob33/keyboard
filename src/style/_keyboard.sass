@@ -7,6 +7,7 @@
   margin: 0 auto
   // background-color: gray
   box-sizing: border-box
+  font-size: 16px
 
   &__key
     position: relative
@@ -22,7 +23,7 @@
 
     background: gray
     color: #fff
-    font-size: 16px
+    font-size: 1em
     font-weight: 500
     line-height: 1em
     font-family: Arial, sans-serif
@@ -39,6 +40,24 @@
       top: 5px
       font-size: 0.7em
       line-height: 1em
+
+    &[data-code*="Key"]:not(.is-upperCase)
+      .v-keyboard__key-upper
+        display: none
+
+    // State (is-uppercase)
+    &.is-upperCase
+      .v-keyboard__key-base
+        display: none
+      .v-keyboard__key-upper
+        position: relative
+        left: 0
+        top: 0
+        font-size: 1em
+
+    &:active,
+    &.is-pressed
+      background-color: rgb(42 195 199)
 
     &[data-code="Backspace"]
       min-width: 80px

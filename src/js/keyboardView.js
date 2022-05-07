@@ -1,2 +1,2 @@
-import { createKeyboard, renderKeyboard } from './keyboardModule';
+import { generateKeyboard, renderKeyboard } from './keyboardModule';
 

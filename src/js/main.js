@@ -1,10 +1,18 @@
 import '../style/style.sass';
 
 import { renderTextarea } from './textareaModule.js';
-import { keys, createKeyboard, renderKeyboard } from './keyboardModule';
+import { keyboard, keys, generateKeyboard, renderKeyboard } from './keyboardModule';
 
 
 window.onload = () => {
+  // RENDER
+
+  // textarea
   renderTextarea(document.body);
-  renderKeyboard(document.body, createKeyboard(keys, 'en'));
+  // keyboard
+  keyboard.el = generateKeyboard(keys, 'en');
+  renderKeyboard(document.body, keyboard.el);
 }
+
+
+import './keyboardController';
