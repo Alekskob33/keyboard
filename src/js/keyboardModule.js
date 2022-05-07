@@ -134,7 +134,7 @@ function keyboardStateHandler(buttonData) {
       );
       break;
     case 'Tab':
-      // insertTab();
+      buttonData.el.dispatchEvent(new CustomEvent('typeRequest', { bubbles: true, detail: { symbol: '\t' } }));
       break;
     case 'Space':
       buttonData.el.dispatchEvent(new CustomEvent('typeRequest', { bubbles: true, detail: { symbol: ' ' } }));
