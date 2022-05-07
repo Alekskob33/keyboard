@@ -1,4 +1,4 @@
-import { textarea, writeSymbol } from './textareaModule';
+import { textarea, writeSymbol, deleteSymbol } from './textareaModule';
 
 document.addEventListener('typeRequest', (event) => {
   // console.log(event);
@@ -9,6 +9,12 @@ document.addEventListener('typeRequest', (event) => {
     symbol
   );
 });
+
+document.addEventListener('deleteRequest', (event) => {
+  const direction = event.detail.direction;
+  deleteSymbol(textarea.el, direction);
+});
+
 
 function moveCursor(direction = 'right') {
   let length = textarea.el.value.length;

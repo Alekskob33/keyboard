@@ -140,10 +140,10 @@ function keyboardStateHandler(buttonData) {
       buttonData.el.dispatchEvent(new CustomEvent('typeRequest', { bubbles: true, detail: { symbol: ' ' } }));
       break;
     case 'Backspace':
-      deleteSymbol('prev');
+      buttonData.el.dispatchEvent(new CustomEvent('deleteRequest', { bubbles: true, detail: { direction: 'prev' } }));
       break;
     case 'Delete':
-      deleteSymbol('next');
+      buttonData.el.dispatchEvent(new CustomEvent('deleteRequest', { bubbles: true, detail: { direction: 'next' } }));
       break;
     case 'ArrowLeft':
       buttonData.el.dispatchEvent(new CustomEvent('arrowRequest', { bubbles: true, detail: { direction: 'left' } }));
@@ -182,9 +182,3 @@ function toggleLanguage() {
   keyboard.el.innerHTML = html;
 }
 
-function deleteSymbol(witch) {
-  // const textContent = textarea.textContent;
-  // if (witch === 'prev') {
-  //   textarea.textContent = textContent.slice(0, textContent.length - 1)
-  // }
-}
