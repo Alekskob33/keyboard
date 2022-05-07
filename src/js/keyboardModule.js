@@ -15,7 +15,7 @@ export let keyboard = {
 }
 
 export let keys = {
-  'current': 'ru',
+  // 'current': 'ru',
   'en': en_Keys,
   'ru': ru_Keys,
 }
@@ -131,13 +131,13 @@ function isChangeLanguageCombination(buttonData) {
 
 function changeLanguage() {
   keyboard.state.lang = keyboard.state.lang === 'ru' ? 'en' : 'ru'; // toggle
-  const lang = keyboard.state.lang;
+  // const lang = keyboard.state.lang;
 
   resetModificatorsMemory(keyboard, 'force');
   keyboard.el.dispatchEvent(new CustomEvent('resetModificatorRequest', { bubbles: true }));
 
   keyboard.el.dispatchEvent(new CustomEvent('changeLanguageRequest', { bubbles: true, detail: { lang: lang } }));
-  console.log(keyboard.state);
+  // console.log(keyboard.state);
 }
 
 // 2. reaction ====================

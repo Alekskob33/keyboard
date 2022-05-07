@@ -1,3 +1,5 @@
+import { keyboard, keys, isSpetialKey } from './keyboardModule';
+
 export const textarea = {
   el: '',
 };
@@ -43,4 +45,19 @@ export function deleteSymbol(area, direction = 'prev') {
   }
 
   area.focus();
+}
+
+export function isEqualLanguage(keyDownEvent, keys) {
+  const code = keyDownEvent.code;
+  const key = keyDownEvent.key;
+  let isEqual = true;
+
+  const keyboardButton = document.querySelector(`[data-code=${code}]`);
+
+  if (keyboardButton && !isSpetialKey(keyboardButton)) {
+    let v_lang = keyboard.state.lang;
+    isEqual = keys[v_lang].find(item => (item.baseKey === key || item.upperKey === key));
+  }
+
+  return isEqual;
 }

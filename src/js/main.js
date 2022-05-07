@@ -18,4 +18,5 @@ window.onload = () => {
 import './keyboardController';
 import './keyboardView';
 
+import './textareaController';
 import './textareaView';

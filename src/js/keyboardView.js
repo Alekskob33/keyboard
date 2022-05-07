@@ -27,6 +27,8 @@ function toggleKeyboardLanguage(event) {
 
   const html = generateKeyboard(keys, lg, 'html');
   el.innerHTML = html;
+
+  keyboard.state.lang = lg;
 }
 
 document.addEventListener('upperCaseRequest', (event) => {
