@@ -1,6 +1,6 @@
 import '../style/style.sass';
 
-import { renderTextarea } from './textareaModule.js';
+import { textarea, renderTextarea } from './textareaModule.js';
 import { keyboard, keys, generateKeyboard, renderKeyboard } from './keyboardModule';
 
 
@@ -16,3 +16,6 @@ window.onload = () => {
 
 
 import './keyboardController';
+import './keyboardView';
+
+import './textareaView';

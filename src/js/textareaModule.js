@@ -1,6 +1,15 @@
-export function renderTextarea(wrapper) {
-  const textarea = document.createElement('textarea');
-  textarea.className = 'textarea';
+export const textarea = {
+  el: '',
+};
 
-  wrapper.append(textarea);
+export function renderTextarea(wrapper) {
+  const elem = document.createElement('textarea');
+  elem.className = 'textarea';
+  textarea.el = elem;
+
+  wrapper.append(elem);
+}
+
+export function writeSymbol(area, symbol) {
+  area.value += symbol;
 }

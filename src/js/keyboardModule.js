@@ -73,7 +73,7 @@ function getButtonData({ target }) {
   return buttonData;
 }
 
-function isSpetialKey(button) {
+export function isSpetialKey(button) {
   if (!button.dataset.upperKey) {
     return true;
   }
@@ -85,55 +85,53 @@ function clickButtonHandler(event) {
 
   // press not-symbol keys
   if (isSpetialKey(buttonData.el)) {
-    changeKeyboardState(buttonData);
+    keyboardStateHandler(buttonData);
   }
   // press symbol-key
   if (!isSpetialKey(buttonData.el)) {
-    writeSymbol(
-      document.querySelector('.textarea'),
-      getButtonSymbol(buttonData.el)
-    );
-
-    resetKeyModificators();
+    // request Event
+    event.target.dispatchEvent(new CustomEvent(
+      'typeRequest', {
+      bubbles: true, detail: {
+        symbol: getButtonSymbol(buttonData.el),
+      }
+    }));
+    resetModificators(buttonData.el);
+    buttonData.el.dispatchEvent(new CustomEvent('resetModificatorRequest', { bubbles: true }));
   }
 }
 
-function writeSymbol(area, symbol) {
-  area.value += symbol;
-}
+function resetModificators(el) {
+  const states = ["ControlLeft", "ControlRight", "ShiftLeft", "ShiftRight", "AltLeft", "AltRight"];
 
-function resetKeyModificators() {
-  const pressedModeButtons = keyboard.el.querySelectorAll('.is-pressed');
-  for (let button of pressedModeButtons) {
-    if (button.dataset.code === 'CapsLock') continue;
-
-    if (button.dataset.code === 'ShiftLeft' || button.dataset.code === 'ShiftRight') {
-      toggleUpperCaseSymbols();
-    }
-
-    keyboard.state[button.dataset.code] = false;
-    button.classList.remove('is-pressed');
+  if (keyboard.state.ShiftLeft || keyboard.state.ShiftRight) {
+    el.dispatchEvent(new CustomEvent('upperCaseRequest', { bubbles: true }));
   }
+  states.forEach(prop => {
+    keyboard.state[prop] = false;
+  });
 };
 
 // 2. reaction ====================
 
-function changeKeyboardState(buttonData) {
+function keyboardStateHandler(buttonData) {
   const { el, code } = buttonData;
   // console.log(code);
   switch (code) {
     case 'ShiftLeft':
     case 'ShiftRight':
     case 'CapsLock':
-      toggleUpperCaseSymbols();
-      toggleModificatorState(buttonData);
-      break;
+      el.dispatchEvent(new CustomEvent('upperCaseRequest', { bubbles: true }));
+    // no break (continue)
     case 'AltLeft':
     case 'AltRight':
     case 'ControlLeft':
     case 'ControlRight':
-      // обновить состояние кнопки и клавиатуры (нажато - не нажато)
       toggleModificatorState(buttonData);
+      // send Request
+      buttonData.el.dispatchEvent(new CustomEvent(
+        'togglePressedRequest', { bubbles: true, detail: { button: buttonData.el } })
+      );
       break;
     case 'Tab':
       // insertTab();
@@ -154,29 +152,19 @@ function changeKeyboardState(buttonData) {
 }
 
 function getButtonSymbol(button) {
-  if (keyboard.state.CapsLock || keyboard.state.ShiftLeft || keyboard.state.ShiftRight) {
+  if (keyboard.state.ShiftLeft || keyboard.state.ShiftRight) {
+    if (!keyboard.state.CapsLock) {
+      return button.dataset.upperKey;
+    }
+  } else if (keyboard.state.CapsLock) {
     return button.dataset.upperKey;
   }
   return button.dataset.baseKey;
 }
 
 // 3. рабочие операции
-function toggleUpperCaseSymbols() {
-  // change DOM-nodes State: [upper/lower]-case for symbols
-  for (let button of keyboard.el.children) {
-    if (!isSpetialKey(button)) {
-      button.classList.toggle('is-upperCase');
-    }
-  }
-}
-
 function toggleModificatorState(buttonData) {
   keyboard.state[buttonData.code] = keyboard.state[buttonData.code] ? false : true; // toggle State
-  buttonData.el.classList.toggle('is-pressed');
-
-  // for (let pressedKey of keyboard.querySelectorAll('is-pressed')) {
-  //   if (pressedKey.dataset)
-  // }
 }
 
 function toggleLanguage() {
@@ -194,5 +182,5 @@ function deleteSymbol(witch) {
 }
 
 function addNewLine() {
-  textarea.textContent += '\n';
+  // textarea.textContent += '\n';
 }
