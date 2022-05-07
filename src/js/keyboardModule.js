@@ -145,8 +145,16 @@ function keyboardStateHandler(buttonData) {
     case 'Delete':
       deleteSymbol('next');
       break;
+    case 'ArrowLeft':
+      buttonData.el.dispatchEvent(new CustomEvent('arrowRequest', { bubbles: true, detail: { direction: 'left' } }));
+      break;
+    case 'ArrowRight':
+      buttonData.el.dispatchEvent(new CustomEvent('arrowRequest', { bubbles: true, detail: { direction: 'right' } }));
+      break;
+    // case 'ArrowDown':
+    // case 'ArrowTop':
     case 'Enter':
-      // addNewLine();
+      buttonData.el.dispatchEvent(new CustomEvent('typeRequest', { bubbles: true, detail: { symbol: '\n' } }));
       break;
   }
 }
@@ -179,8 +187,4 @@ function deleteSymbol(witch) {
   // if (witch === 'prev') {
   //   textarea.textContent = textContent.slice(0, textContent.length - 1)
   // }
-}
-
-function addNewLine() {
-  // textarea.textContent += '\n';
 }

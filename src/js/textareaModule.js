@@ -11,5 +11,6 @@ export function renderTextarea(wrapper) {
 }
 
 export function writeSymbol(area, symbol) {
-  area.value += symbol;
+  area.setRangeText(symbol, area.selectionStart, area.selectionEnd, "end");
+  area.focus();
 }
