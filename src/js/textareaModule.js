@@ -1,16 +1,21 @@
 import { keyboard, keys, isSpetialKey } from './keyboardModule';
 
-export const textarea = {
-  el: '',
-};
+export class TextareaElem {
+  constructor(className) {
+    this.el = document.createElement('textarea');
+
+    this.el.autofocus = true;
+    this.el.className = className;
+  }
+}
+
+export let textarea;
 
 export function renderTextarea(wrapper) {
-  const elem = document.createElement('textarea');
-  elem.className = 'textarea';
-  elem.setAttribute('autofocus', true);
-  textarea.el = elem;
+  textarea = new TextareaElem('textarea');
+  console.log(textarea);
 
-  wrapper.append(elem);
+  wrapper.append(textarea.el);
 }
 
 export function writeSymbol(area, symbol) {
