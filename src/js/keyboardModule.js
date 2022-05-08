@@ -1,6 +1,6 @@
 import { ru_Keys, en_Keys } from './keys.js';
 
-export class KeyboardClass {
+export class KeyboardElem {
   constructor(elem, lang = 'en') {
     this.el = elem;
     this.state = {
