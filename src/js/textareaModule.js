@@ -7,6 +7,7 @@ export const textarea = {
 export function renderTextarea(wrapper) {
   const elem = document.createElement('textarea');
   elem.className = 'textarea';
+  elem.setAttribute('autofocus', true);
   textarea.el = elem;
 
   wrapper.append(elem);
