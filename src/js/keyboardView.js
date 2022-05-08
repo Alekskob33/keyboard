@@ -16,10 +16,11 @@ function togglePressed(el) {
 function resetKeyModificators() {
   const pressedModificators = keyboard.el.querySelectorAll('.is-pressed');
 
-  for (let button of pressedModificators) {
-    if (button.dataset.code === 'CapsLock') continue;
-    button.classList.remove('is-pressed');
-  }
+  [...pressedModificators].forEach((button) => {
+    if (button.dataset.code !== 'CapsLock') {
+      button.classList.remove('is-pressed');
+    }
+  });
 };
 
 function toggleKeyboardLanguage(event) {
