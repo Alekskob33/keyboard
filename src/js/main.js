@@ -1,12 +1,12 @@
 import '../style/style.sass';
 
 import { textarea, renderTextarea } from './textareaModule.js';
-import { keyboard, keys, generateKeyboard, renderKeyboard } from './keyboardModule';
+import { KeyboardClass, keys, generateKeyboard, renderKeyboard } from './keyboardModule';
 
+export let keyboard;
 
+// RENDER
 window.onload = () => {
-  // RENDER
-
   // textarea
   renderTextarea(document.body);
 
@@ -14,11 +14,13 @@ window.onload = () => {
   if (localStorage.getItem('keyboardLang')) {
     // read memory
     const lang = localStorage.getItem('keyboardLang');
-    keyboard.state.lang = lang;
-    keyboard.el = generateKeyboard(keys, lang);
+    const el = generateKeyboard(keys, lang);
+    keyboard = new KeyboardClass(el, lang);
+    // console.log(keyboard);
   } else {
     // default lang
-    keyboard.el = generateKeyboard(keys, 'en');
+    const el = generateKeyboard(keys, 'en');
+    keyboard = new KeyboardClass(el, 'en');
   }
   renderKeyboard(document.body, keyboard.el);
 }
