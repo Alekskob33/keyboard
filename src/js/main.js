@@ -9,8 +9,17 @@ window.onload = () => {
 
   // textarea
   renderTextarea(document.body);
+
   // keyboard
-  keyboard.el = generateKeyboard(keys, 'en');
+  if (localStorage.getItem('keyboardLang')) {
+    // read memory
+    const lang = localStorage.getItem('keyboardLang');
+    keyboard.state.lang = lang;
+    keyboard.el = generateKeyboard(keys, lang);
+  } else {
+    // default lang
+    keyboard.el = generateKeyboard(keys, 'en');
+  }
   renderKeyboard(document.body, keyboard.el);
 }
 

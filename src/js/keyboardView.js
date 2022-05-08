@@ -25,10 +25,11 @@ function toggleKeyboardLanguage(event) {
   const el = event.target;
   const lg = event.detail.lang;
 
+  keyboard.state.lang = lg;
+  localStorage.setItem('keyboardLang', lg);
+
   const html = generateKeyboard(keys, lg, 'html');
   el.innerHTML = html;
-
-  keyboard.state.lang = lg;
 }
 
 document.addEventListener('upperCaseRequest', (event) => {

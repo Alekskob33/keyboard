@@ -136,6 +136,8 @@ function changeLanguage() {
   resetModificatorsMemory(keyboard, 'force');
   keyboard.el.dispatchEvent(new CustomEvent('resetModificatorRequest', { bubbles: true }));
 
+  keyboard.state.lang = lang;
+  localStorage.setItem('keyboardLang', lang); // write in memory: 'Local Storage'
   keyboard.el.dispatchEvent(new CustomEvent('changeLanguageRequest', { bubbles: true, detail: { lang: lang } }));
   // console.log(keyboard.state);
 }
@@ -210,13 +212,6 @@ function getButtonSymbol(button) {
 // 3. рабочие операции
 function toggleModificatorState(buttonData) {
   keyboard.state[buttonData.code] = keyboard.state[buttonData.code] ? false : true; // toggle State
-}
-
-function toggleLanguage() {
-  const lang = keyboard.lang === 'ru' ? 'en' : 'ru';
-  const html = generateKeyboard(keys, lang, 'html');
-
-  keyboard.el.innerHTML = html;
 }
 
 export function highlightButton(ev) {
