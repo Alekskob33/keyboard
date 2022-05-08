@@ -1,21 +1,25 @@
 import { ru_Keys, en_Keys } from './keys.js';
 
-export let keyboard = {
-  el: document.querySelector('.v-keyboard') ? document.querySelector('.v-keyboard') : null, // при инициализации обновляем элемент
-  state: {
-    CapsLock: false,
-    ControlLeft: false,
-    ControlRight: false,
-    ShiftLeft: false,
-    ShiftRight: false,
-    AltLeft: false,
-    AltRight: false,
-    lang: 'en',
+export class KeyboardElem {
+  constructor(elem, lang = 'en') {
+    this.el = elem;
+    this.state = {
+      CapsLock: false,
+      ControlLeft: false,
+      ControlRight: false,
+      ShiftLeft: false,
+      ShiftRight: false,
+      AltLeft: false,
+      AltRight: false,
+      lang: lang,
+    }
   }
 }
 
+import { keyboard } from './main.js';
+export { keyboard } from './main.js';
+
 export let keys = {
-  // 'current': 'ru',
   'en': en_Keys,
   'ru': ru_Keys,
 }

@@ -1,4 +1,5 @@
-import { keyboard, keys, generateKeyboard, renderKeyboard, highlightButton, isSpetialKey } from './keyboardModule';
+import { keys, generateKeyboard, renderKeyboard, highlightButton, isSpetialKey } from './keyboardModule';
+import { keyboard } from './main';
 
 function toggleUpperCaseSymbols() {
   for (let button of keyboard.el.children) {
