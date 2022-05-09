@@ -1,12 +1,21 @@
-import { keys, generateKeyboard, renderKeyboard, highlightButton, isSpetialKey } from './keyboardModule';
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable import/no-cycle */
+/* eslint-disable import/no-mutable-exports */
+
+import {
+  keys, generateKeyboard, highlightButton, isSpetialKey,
+} from './keyboardModule';
 import { keyboard } from './main';
 
 function toggleUpperCaseSymbols() {
-  for (let button of keyboard.el.children) {
+  [...keyboard.el.children].forEach((button) => {
     if (!isSpetialKey(button)) {
       button.classList.toggle('is-upperCase');
     }
-  }
+  });
 }
 
 function togglePressed(el) {
@@ -21,7 +30,7 @@ function resetKeyModificators() {
       button.classList.remove('is-pressed');
     }
   });
-};
+}
 
 function toggleKeyboardLanguage(event) {
   const el = event.target;
@@ -34,16 +43,16 @@ function toggleKeyboardLanguage(event) {
   el.innerHTML = html;
 }
 
-document.addEventListener('upperCaseRequest', (event) => {
+document.addEventListener('upperCaseRequest', () => {
   toggleUpperCaseSymbols();
 });
 
 document.addEventListener('togglePressedRequest', (event) => {
-  const button = event.detail.button;
+  const { detail: { button } } = event;
   togglePressed(button);
 });
 
-document.addEventListener('resetModificatorRequest', (event) => {
+document.addEventListener('resetModificatorRequest', () => {
   resetKeyModificators();
 });
 

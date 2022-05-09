@@ -1,4 +1,12 @@
-import { ru_Keys, en_Keys } from './keys.js';
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable import/no-cycle */
+/* eslint-disable import/no-mutable-exports */
+import { ruKeys, enKeys } from './keys';
+
+import { keyboard } from './main';
 
 export class KeyboardElem {
   constructor(elem, lang = 'en') {
@@ -11,26 +19,25 @@ export class KeyboardElem {
       ShiftRight: false,
       AltLeft: false,
       AltRight: false,
-      lang: lang,
-    }
+      lang,
+    };
   }
 }
 
-import { keyboard } from './main.js';
-export { keyboard } from './main.js';
+export { keyboard } from './main';
 
-export let keys = {
-  'en': en_Keys,
-  'ru': ru_Keys,
-}
+export const keys = {
+  en: enKeys,
+  ru: ruKeys,
+};
 
-export function generateKeyboard(keys, lang, result = 'node') {
-  if (!keys) console.log('keys are not given');
+export function generateKeyboard(keysArr, lang, result = 'node') {
+  if (!keysArr) return false;
 
-  const keyboard = document.createElement('div');
-  keyboard.className = 'v-keyboard';
+  const keyboardElem = document.createElement('div');
+  keyboardElem.className = 'v-keyboard';
 
-  for (let key of keys[lang]) {
+  keysArr[lang].forEach((key) => {
     const keyElem = document.createElement('div');
 
     keyElem.className = 'v-keyboard__key';
@@ -42,19 +49,18 @@ export function generateKeyboard(keys, lang, result = 'node') {
       <span class="v-keyboard__key-upper">${(typeof key.upperKey === 'string' && key.upperKey !== 'auto') ? key.upperKey : ''}</span>
       <span class="v-keyboard__key-base">${key.baseKey ? key.baseKey : ''}</span>
     `;
-    // 
-    keyboard.append(keyElem);
-  }
 
-  if (result === 'node') {
-    return keyboard;
-  } else if (result === 'html') {
-    return keyboard.innerHTML;
+    keyboardElem.append(keyElem);
+  });
+
+  if (result === 'html') {
+    return keyboardElem.innerHTML;
   }
+  return keyboardElem;
 }
 
-export function renderKeyboard(wrapper, keyboard) {
-  wrapper.append(keyboard);
+export function renderKeyboard(wrapper, keyboardElem) {
+  wrapper.append(keyboardElem);
 }
 
 // Work Tasks
@@ -69,10 +75,10 @@ document.addEventListener('keyClick', (event) => {
 function getButtonData({ target }) {
   const button = target.closest('[data-code]') ? target.closest('[data-code]') : null;
   const buttonData = {
-    el: button ? button : null,
+    el: button || null,
     key: button.dataset.baseKey ? button.dataset.baseKey : null,
     upperKey: button.dataset.upperKey ? button.dataset.upperKey : null,
-    code: button.dataset.code ? button.dataset.code : null
+    code: button.dataset.code ? button.dataset.code : null,
   };
   return buttonData;
 }
@@ -94,11 +100,11 @@ function clickButtonHandler(event) {
   // press symbol-key
   if (!isSpetialKey(buttonData.el)) {
     // request Event
-    event.target.dispatchEvent(new CustomEvent(
-      'typeRequest', {
-      bubbles: true, detail: {
+    event.target.dispatchEvent(new CustomEvent('typeRequest', {
+      bubbles: true,
+      detail: {
         symbol: getButtonSymbol(buttonData.el),
-      }
+      },
     }));
     resetModificatorsMemory(buttonData.el);
     buttonData.el.dispatchEvent(new CustomEvent('resetModificatorRequest', { bubbles: true }));
@@ -106,7 +112,7 @@ function clickButtonHandler(event) {
 }
 
 function resetModificatorsMemory(el, mode = 'typing') {
-  const states = ["ControlLeft", "ControlRight", "ShiftLeft", "ShiftRight", "AltLeft", "AltRight"];
+  const states = ['ControlLeft', 'ControlRight', 'ShiftLeft', 'ShiftRight', 'AltLeft', 'AltRight'];
 
   if (mode === 'typing') {
     if (keyboard.state.ShiftLeft || keyboard.state.ShiftRight) {
@@ -118,10 +124,10 @@ function resetModificatorsMemory(el, mode = 'typing') {
     keyboard.state.CapsLock = false;
   }
 
-  states.forEach(prop => {
+  states.forEach((prop) => {
     keyboard.state[prop] = false;
   });
-};
+}
 
 function isChangeLanguageCombination(buttonData) {
   const codeAlt = buttonData.code === 'AltLeft' || buttonData.code === 'AltRight';
@@ -135,15 +141,14 @@ function isChangeLanguageCombination(buttonData) {
 
 function changeLanguage() {
   keyboard.state.lang = keyboard.state.lang === 'ru' ? 'en' : 'ru'; // toggle
-  const lang = keyboard.state.lang;
+  const { lang } = keyboard.state;
 
   resetModificatorsMemory(keyboard, 'force');
   keyboard.el.dispatchEvent(new CustomEvent('resetModificatorRequest', { bubbles: true }));
 
   keyboard.state.lang = lang;
   localStorage.setItem('keyboardLang', lang); // write in memory: 'Local Storage'
-  keyboard.el.dispatchEvent(new CustomEvent('changeLanguageRequest', { bubbles: true, detail: { lang: lang } }));
-  // console.log(keyboard.state);
+  keyboard.el.dispatchEvent(new CustomEvent('changeLanguageRequest', { bubbles: true, detail: { lang } }));
 }
 
 // 2. reaction ====================
@@ -166,15 +171,14 @@ function keyboardStateHandler(buttonData) {
     case 'CapsLock':
       el.dispatchEvent(new CustomEvent('upperCaseRequest', { bubbles: true }));
     // no break (continue)
+    // eslint-disable-next-line no-fallthrough
     case 'AltLeft':
     case 'AltRight':
     case 'ControlLeft':
     case 'ControlRight':
       toggleModificatorState(buttonData);
       // send Request
-      buttonData.el.dispatchEvent(new CustomEvent(
-        'togglePressedRequest', { bubbles: true, detail: { button: buttonData.el } })
-      );
+      buttonData.el.dispatchEvent(new CustomEvent('togglePressedRequest', { bubbles: true, detail: { button: buttonData.el } }));
       break;
     case 'Tab':
       buttonData.el.dispatchEvent(new CustomEvent('typeRequest', { bubbles: true, detail: { symbol: '\t' } }));
@@ -199,6 +203,8 @@ function keyboardStateHandler(buttonData) {
     case 'Enter':
       buttonData.el.dispatchEvent(new CustomEvent('typeRequest', { bubbles: true, detail: { symbol: '\n' } }));
       break;
+    default:
+      break;
   }
 }
 
@@ -215,7 +221,7 @@ function getButtonSymbol(button) {
 
 // 3. рабочие операции
 function toggleModificatorState(buttonData) {
-  keyboard.state[buttonData.code] = keyboard.state[buttonData.code] ? false : true; // toggle State
+  keyboard.state[buttonData.code] = !keyboard.state[buttonData.code]; // toggle State
 }
 
 export function highlightButton(ev) {
@@ -229,8 +235,7 @@ export function highlightButton(ev) {
     setTimeout(() => {
       keyboardButton.classList.remove('is-active');
     }, 100);
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err.message);
   }
 }
