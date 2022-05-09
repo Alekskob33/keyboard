@@ -1,0 +1,96 @@
+.v-keyboard
+  display: flex
+  justify-content: space-between
+  flex-wrap: wrap
+  gap: 10px
+  width: 770px
+  margin: 0 auto
+  // background-color: gray
+  box-sizing: border-box
+  font-size: 16px
+
+  &__key
+    position: relative
+    display: inline-flex
+    justify-content: center
+    align-items: center
+
+    flex-basis: 40px
+    flex-grow: 0
+    flex-shrink: 0
+    height: 40px
+    border-radius: 5px
+
+    background: gray
+    color: #fff
+    font-size: 1em
+    font-weight: 500
+    line-height: 1em
+    font-family: Arial, sans-serif
+    cursor: pointer
+    transition: all 200ms
+    user-select: none
+
+    &:hover
+      background-color: lighten(gray, 25%)
+
+    &-upper
+      position: absolute
+      left: 5px
+      top: 5px
+      font-size: 0.7em
+      line-height: 1em
+
+    &[data-upper-key="Ё"]:not(.is-upperCase),
+    &[data-code="Semicolon"]:not(.is-upperCase),
+    &[data-code="Quote"]:not(.is-upperCase),
+    &[data-code*="Bracket"]:not(.is-upperCase),
+    &[data-code="Period"]:not(.is-upperCase),
+    &[data-code="Comma"]:not(.is-upperCase),
+    &[data-code*="Key"]:not(.is-upperCase)
+      .v-keyboard__key-upper
+        display: none
+
+    // State (is-uppercase)
+    &.is-upperCase
+      .v-keyboard__key-base
+        display: none
+      .v-keyboard__key-upper
+        position: relative
+        left: 0
+        top: 0
+        font-size: 1em
+
+    &:active,
+    &.is-active,
+    &.is-pressed
+      background-color: rgb(42 195 199)
+
+    &[data-code="Backspace"]
+      min-width: 80px
+    &[data-code="Tab"]
+      min-width: 60px
+    &[data-code="CapsLock"],
+    &[data-code="Enter"]
+      min-width: 90px
+    &[data-code="ShiftLeft"]
+      min-width: 106px
+    &[data-code="ShiftRight"]
+      min-width: 75px
+    &[data-code="ControlLeft"]
+      min-width: 60px
+    &[data-code="ControlRight"]
+      min-width: 54px
+
+    &[data-code="Tab"],
+    &[data-code="Backspace"],
+    &[data-code="ShiftLeft"],
+    &[data-code="ShiftRight"],
+    &[data-code="ControlLeft"],
+    // &[data-code="ControlRight"],
+    // &[data-code="ContextMenu"],
+    // &[data-code="MetaLeft"],
+    // &[data-code="AltLeft"],
+    // &[data-code="AltRight"],
+    &[data-code="Space"]
+      flex-grow: 1
