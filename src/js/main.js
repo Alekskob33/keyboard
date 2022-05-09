@@ -1,8 +1,21 @@
+/* eslint-disable no-undef */
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable import/no-cycle */
+/* eslint-disable import/no-mutable-exports */
 import '../style/style.sass';
 
-import { textarea, renderTextarea } from './textareaModule.js';
-import { KeyboardElem, keys, generateKeyboard, renderKeyboard } from './keyboardModule';
-import { Content } from './contentModule';
+import { renderTextarea } from './textareaModule';
+import {
+  KeyboardElem, keys, generateKeyboard, renderKeyboard,
+} from './keyboardModule';
+
+import Content from './contentModule';
+
+import './keyboardController';
+import './keyboardView';
+
+import './textareaController';
+import './textareaView';
 
 export let keyboard;
 
@@ -17,7 +30,6 @@ window.onload = () => {
     const lang = localStorage.getItem('keyboardLang');
     const el = generateKeyboard(keys, lang);
     keyboard = new KeyboardElem(el, lang);
-    // console.log(keyboard);
   } else {
     // default lang
     const el = generateKeyboard(keys, 'en');
@@ -28,15 +40,8 @@ window.onload = () => {
   // Content
   const text = {
     textTitle: 'RSS Virtual Keyboard',
-    textDescription: 'This keyboard was involved for OS Windows. <br>Use "Shift" + "Alt" to change language.'
-  }
+    textDescription: 'This keyboard was involved for OS Windows. <br>Use "Shift" + "Alt" to change language.',
+  };
   const content = new Content(text);
   content.renderContent();
-}
-
-
-import './keyboardController';
-import './keyboardView';
-
-import './textareaController';
-import './textareaView';
+};

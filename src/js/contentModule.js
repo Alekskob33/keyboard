@@ -1,4 +1,4 @@
-export class Content {
+export default class Content {
   constructor(content = { textTitle: 'Title', textDescription: 'Text' }) {
     const { textTitle, textDescription } = content;
 
